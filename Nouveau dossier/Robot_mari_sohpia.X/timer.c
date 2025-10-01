@@ -1,6 +1,9 @@
 #include <xc.h>
 #include "timer.h"
 #include "IO.h"
+#include "PWM.h"
+#include "Robot.h"
+
 //Initialisation d?un timer 16 bits
 void InitTimer1(void) {
 //Timer1 pour horodater les mesures (1ms)
@@ -15,6 +18,8 @@ PR1 = 4687.5;
 IFS0bits.T1IF = 0; // Clear Timer Interrupt Flag
 IEC0bits.T1IE = 1; // Enable Timer interrupt
 T1CONbits.TON = 1; // Enable Timer
+
+PWMUpdateSpeed();
 }
 //Interruption du timer 1
 void __attribute__((interrupt, no_auto_psv)) _T1Interrupt(void) {
@@ -38,7 +43,24 @@ IEC0bits.T3IE = 1; // Enable Timer3 interrupt
 T2CONbits.TON = 1; // Start 32-bit Timer
 }
 //Interruption du timer 32 bits sur 2-3
-void __attribute__((interrupt, no_auto_psv)) _T3Interrupt(void) {
+
+/*void __attribute__((interrupt, no_auto_psv)) _T3Interrupt(void) {
 IFS0bits.T3IF = 0; // Clear Timer3 Interrupt Flag
 LED_ORANGE_1 = !LED_ORANGE_1;
+}*/
+
+unsigned char toggle = 0;
+//Interruption du timer 32 bits sur 2-3
+void __attribute__((interrupt, no_auto_psv)) _T3Interrupt(void) {
+    IFS0bits.T3IF = 0; // Clear Timer3 Interrupt Flag
+    /*if(toggle == 0){
+        PWMSetSpeed(20, MOTEUR_DROIT);
+        PWMSetSpeed(20, MOTEUR_GAUCHE);
+        toggle = 1;
+    }
+    else{
+        PWMSetSpeed(-20, MOTEUR_DROIT);
+        PWMSetSpeed(-20, MOTEUR_GAUCHE);
+        toggle = 0;
+    }*/
 }

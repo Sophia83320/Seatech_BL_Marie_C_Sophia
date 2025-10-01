@@ -10,6 +10,9 @@
 #include "ChipConfig.h"
 #include "IO.h"
 #include "timer.h"
+#include "PWM.h"
+#include "Toolbox.h"
+#include"Robot.h"
 
 
 
@@ -20,11 +23,16 @@ int main(void) {
     InitTimer1();
     //Configuration des input et output (IO)
     InitIO();
+    //PWM moteurs
+    InitPWM();
+    PWMSetSpeedConsigne(20, MOTEUR_DROIT);
     LED_BLANCHE_1 = 1;
     LED_BLEUE_1 = 1;
     LED_ORANGE_1 = 1;
     LED_ROUGE_1 = 1;
     LED_VERTE_1 = 1;
+    
+    PWM_EN=1;
 
     //Boucle Principale
     while (1) {
@@ -32,5 +40,6 @@ int main(void) {
 //        LED_BLEUE_1 = !LED_BLEUE_1;
 //        LED_ORANGE_1 = !LED_ORANGE_1;
     } // fin main
+    
 }
 
